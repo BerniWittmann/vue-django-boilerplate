@@ -12,7 +12,7 @@ Clone Project
 pip install -r requirements.txt
 ```
 
-3. Setup your database
+3. Setup your database (in this example a Postgres Database is already setup)
 4. Create a ```.env``` file in the root directory. This will handle your config variables.
 Example:
 ```
