@@ -1,0 +1,9 @@
+django
+djangorestframework
+django-cors-headers
+django-debug-toolbar
+psycopg2
+python-decouple
+django-webpack-loader
+gunicorn
+Whitenoise
