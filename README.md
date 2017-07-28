@@ -10,7 +10,7 @@ Clone Project
 2. Install dependencies
 ```
 pip install -r requirements.txt
-´´´
+```
 3. Setup your database
 4. Create a ```.env``` file in the root directory. This will handle your config variables.
 Example:
