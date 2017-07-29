@@ -56,6 +56,9 @@ MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
+if DEBUG:
+    MIDDLEWARE.append('api.middleware.DisableCsrfCheck')
+
 ROOT_URLCONF = 'vue-django.urls'
 
 TEMPLATES = [
