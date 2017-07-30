@@ -41,6 +41,7 @@ Axios.interceptors.response.use(
     if (error.response.status === 401) {
       authService.logout();
     }
+    return Promise.reject(error);
   });
 
 Vue.$http = Axios;
@@ -80,6 +81,7 @@ import routes from './routes';
 Vue.use(VueRouter);
 
 export const router = new VueRouter({
+  mode: 'history',
   routes,
 });
 router.beforeEach((to, from, next) => {

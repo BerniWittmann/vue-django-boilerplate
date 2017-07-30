@@ -29,9 +29,10 @@ export default (user) => {
    *     failed(error);
    *   });
    */
-  if (!user.email || !user.password) {
-    failed();
-  } else {
-    success('RandomGeneratedToken');
-  }
+  Vue.$http.post('/account/login/', user)
+      .then((response) => {
+        success(response.data.token);
+      }).catch((error) => {
+        failed(error);
+      });
 };

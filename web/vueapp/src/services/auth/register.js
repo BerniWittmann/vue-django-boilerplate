@@ -1,11 +1,10 @@
 import Vue from 'vue';
-import store from './../../store';
+import UserTransformer from './../../transformers/user';
 
 // When the request succeeds
-const success = (token) => {
-  store.dispatch('auth/login', token);
+const success = () => {
   Vue.router.push({
-    name: 'home.index',
+    name: 'login.index',
   });
 };
 
@@ -27,11 +26,11 @@ export default (user) => {
    *     failed(error);
    *   });
    */
-  if (!user.email || !user.password || !user.passwordConfirm || !user.firstName || !user.lastName) {
-    failed();
-  } else if (user.password !== user.passwordConfirm) {
-    failed();
-  } else {
-    success('RandomGeneratedToken');
-  }
+  Vue.$http.post('/account/signup/', UserTransformer.send(user))
+      .then((response) => {
+        console.log(response);
+        success();
+      }).catch((error) => {
+        failed(error);
+      });
 };

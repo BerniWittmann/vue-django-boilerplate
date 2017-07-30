@@ -1,25 +1,23 @@
-import accountTransformer from './../../transformers/account';
-import store from './../../store';
 import Vue from 'vue';
 
 // When the request succeeds
-const success = (account) => {
-  account = accountTransformer.fetch(account);
-
-  store.dispatch('account/store', account);
+const success = () => {
+  Vue.router.push({
+    name: 'login.index',
+  });
 };
 
 // When the request fails
 const failed = () => {
 };
 
-export default () => {
+export default (user) => {
   /*
    * Normally you would perform an AJAX-request.
    * But to get the example working, the data is hardcoded.
    *
    * With the include REST-client Axios, you can do something like this:
-   * Vue.$http.get('/account')
+   * Vue.$http.post('/auth/login', user)
    *   .then((response) => {
    *     success(response);
    *   })
@@ -27,9 +25,9 @@ export default () => {
    *     failed(error);
    *   });
    */
-  Vue.$http.get('/account/users/me/')
-      .then((response) => {
-        success(response.data);
+  Vue.$http.post('/account/password/reset/', user)
+      .then(() => {
+        success();
       }).catch((error) => {
         failed(error);
       });

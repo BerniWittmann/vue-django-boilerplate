@@ -17,14 +17,14 @@ export default {
   [CHECK](state) {
     state.authenticated = !!localStorage.getItem('id_token');
     if (state.authenticated) {
-      Vue.$http.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem('id_token')}`;
+      Vue.$http.defaults.headers.common.Authorization = `JWT ${localStorage.getItem('id_token')}`;
     }
   },
 
   [LOGIN](state, token) {
     state.authenticated = true;
     localStorage.setItem('id_token', token);
-    Vue.$http.defaults.headers.common.Authorization = `Bearer ${token}`;
+    Vue.$http.defaults.headers.common.Authorization = `JWT ${token}`;
   },
 
   [LOGOUT](state) {

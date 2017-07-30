@@ -2,10 +2,10 @@
   <v-layout>
     <v-panel contextual-style="primary">
       <h1 class="panel-title" slot="heading">
-        Login
+        Forgot Password?
       </h1>
       <div slot="body">
-        <form @submit.prevent="login(user)">
+        <form @submit.prevent="requestPassword(user)">
           <div class="form-group">
             <div class="input-group">
               <div class="input-group-addon">
@@ -20,21 +20,8 @@
             </div>
           </div>
           <div class="form-group">
-            <div class="input-group">
-              <div class="input-group-addon">
-                <i class="fa fa-lock fa-fw"></i>
-              </div>
-              <input
-                v-model="user.password"
-                type="password"
-                placeholder="Password"
-                class="form-control"
-              >
-            </div>
-          </div>
-          <div class="form-group">
             <button class="btn btn-primary">
-              Login
+              Reset Password
             </button>
           </div>
         </form>
@@ -42,7 +29,6 @@
       <div slot="footer">
         No account?
         <router-link :to="{ name: 'register.index' }">Register</router-link>
-        <router-link class="pull-right" :to="{ name: 'password-forgot.index' }">Forgot Password?</router-link>
       </div>
     </v-panel>
   </v-layout>
@@ -50,10 +36,10 @@
 
 <script>
   /* ============
-   * Login Index Page
+   * Password forgot Index Page
    * ============
    *
-   * Page where the user can login.
+   * Page where the user can request a new Password.
    */
   import authService from '@/services/auth';
 
@@ -62,14 +48,13 @@
       return {
         user: {
           email: null,
-          password: null,
         },
       };
     },
 
     methods: {
-      login(user) {
-        authService.login(user);
+      requestPassword(user) {
+        authService.requestPassword(user);
       },
     },
 

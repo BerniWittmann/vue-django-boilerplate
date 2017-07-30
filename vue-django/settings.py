@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'api.apps.ApiConfig',
+    'authemail',
+    'api.accounts.apps.AccountsConfig',
     'debug_toolbar',
 ]
 
@@ -114,7 +116,10 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 REST_FRAMEWORK = {
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 10,
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    ),
 }
 
 # Internationalization
@@ -136,11 +141,25 @@ CORS_ORIGIN_WHITELIST = (
     'localhost:8080',
 )
 
+AUTH_USER_MODEL = 'accounts.MyUser'
+
+AUTH_EMAIL_VERIFICATION = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+APPEND_SLASH = True
+DEFAULT_EMAIL_FROM = config('DEFAULT_EMAIL_FROM')
+DEFAULT_EMAIL_BCC = ''
+
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_PORT = config('EMAIL_PORT')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=False)
+SERVER_EMAIL = config('SERVER_EMAIL')
 
 try:
     from .settings_deploy import *

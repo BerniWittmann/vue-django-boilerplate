@@ -2,23 +2,10 @@
   <v-layout>
     <v-panel contextual-style="primary">
       <h1 class="panel-title" slot="heading">
-        Login
+        Reset Password
       </h1>
       <div slot="body">
-        <form @submit.prevent="login(user)">
-          <div class="form-group">
-            <div class="input-group">
-              <div class="input-group-addon">
-                <i class="fa fa-envelope fa-fw"></i>
-              </div>
-              <input
-                v-model="user.email"
-                type="email"
-                placeholder="Email"
-                class="form-control"
-              >
-            </div>
-          </div>
+        <form @submit.prevent="resetPassword(user)">
           <div class="form-group">
             <div class="input-group">
               <div class="input-group-addon">
@@ -33,8 +20,21 @@
             </div>
           </div>
           <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-addon">
+                <i class="fa fa-lock fa-fw"></i>
+              </div>
+              <input
+                      v-model="user.passwordConfirm"
+                      type="password"
+                      placeholder="Confirm Password"
+                      class="form-control"
+              >
+            </div>
+          </div>
+          <div class="form-group">
             <button class="btn btn-primary">
-              Login
+              Reset Password
             </button>
           </div>
         </form>
@@ -42,7 +42,6 @@
       <div slot="footer">
         No account?
         <router-link :to="{ name: 'register.index' }">Register</router-link>
-        <router-link class="pull-right" :to="{ name: 'password-forgot.index' }">Forgot Password?</router-link>
       </div>
     </v-panel>
   </v-layout>
@@ -61,15 +60,21 @@
     data() {
       return {
         user: {
-          email: null,
+          code: null,
           password: null,
+          passwordConfirm: null,
         },
       };
     },
 
+    beforeMount() {
+      authService.checkResetPasswordCode(this.$route.query.code);
+      this.user.code = this.$route.query.code;
+    },
+
     methods: {
-      login(user) {
-        authService.login(user);
+      resetPassword(user) {
+        authService.resetPassword(user);
       },
     },
 

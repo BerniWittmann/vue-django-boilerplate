@@ -48,9 +48,33 @@ export default [
     },
   },
 
+  // Password Forgot
+  {
+    path: '/password/forgot',
+    name: 'password-forgot.index',
+    component: require('@/pages/password-forgot/index.vue'),
+
+    // If the user needs to be a guest to view this page
+    meta: {
+      guest: true,
+    },
+  },
+
+  // Password Forgot
+  {
+    path: '/password/reset',
+    name: 'password-reset.index',
+    component: require('@/pages/password-reset/index.vue'),
+
+    // If the user needs to be a guest to view this page
+    meta: {
+      guest: true,
+    },
+  },
+
   // Register
   {
-    path: '/register',
+    path: '/signup',
     name: 'register.index',
     component: require('@/pages/register/index.vue'),
 
@@ -59,6 +83,19 @@ export default [
       guest: true,
     },
   },
+
+  // Email Verify
+  {
+    path: '/signup/verify',
+    name: 'email-verify.index',
+    component: require('@/pages/email-verify/index.vue'),
+
+    // If the user needs to be a guest to view this page
+    meta: {
+      guest: true,
+    },
+  },
+
   {
     path: '/',
     redirect: '/home',
