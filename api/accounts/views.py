@@ -1,14 +1,15 @@
 from django.contrib.auth import authenticate
 from django.utils.translation import gettext as _
-from authemail.views import Login
+from authemail.views import Login, Logout, PasswordResetVerified, UserMe
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework_jwt.settings import api_settings
+from .serializers import UserSerializer
+from authemail.models import PasswordResetCode
 
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 
-# Create your views here.
 
 class CustomLogin(Login):
     def post(self, request, format=None):
@@ -42,3 +43,40 @@ class CustomLogin(Login):
         else:
             return Response(serializer.errors,
                             status=status.HTTP_400_BAD_REQUEST)
+
+
+class CustomLogout(Logout):
+    def get(self, request, format=None):
+        """
+        Remove all auth tokens owned by request.user.
+        """
+        content = {'success': _('User logged out.')}
+        return Response(content, status=status.HTTP_200_OK)
+
+
+class CustomPasswordResetVerified(PasswordResetVerified):
+    def post(self, request, format=None):
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            code = serializer.data['code']
+            password = serializer.data['password']
+
+            try:
+                password_reset_code = PasswordResetCode.objects.get(code=code)
+                password_reset_code.user.set_password(password)
+                password_reset_code.user.save()
+                password_reset_code.delete()
+                content = {'success': _('Password reset.')}
+                return Response(content, status=status.HTTP_200_OK)
+            except PasswordResetCode.DoesNotExist:
+                content = {'detail': _('Unable to verify user.')}
+                return Response(content, status=status.HTTP_400_BAD_REQUEST)
+
+        else:
+            return Response(serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)
+
+
+class CustomUserMe(UserMe):
+    serializer_class = UserSerializer
